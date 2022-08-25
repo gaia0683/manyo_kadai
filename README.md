@@ -1,24 +1,16 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+model Users
+t.string name
+t.string email
+t.text password_digest
 
-Things you may want to cover:
+model Tasks
+t.string name
+t.text content
+t.datetime end_time
+t.integer rank
+t.string status
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+model Labels
+t.stirng class

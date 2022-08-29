@@ -5,7 +5,7 @@
 ||
 
 | task    |
-| ------- | ------ |
+| :------ | :----- |
 | name    | string |
 | content | text   |
 

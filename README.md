@@ -1,5 +1,14 @@
 # README
 
+| user |
+||
+||
+
+| task    |
+| ------- | ------ |
+| name    | string |
+| content | text   |
+
 model Users
 t.string name
 t.string email

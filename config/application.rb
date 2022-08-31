@@ -11,6 +11,8 @@ module TaskApp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    config.time_zone = 'Tokyo'
+
     config.generators do |g|
       g.test_framework :rspec,
       model_specs: true,

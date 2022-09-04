@@ -2,16 +2,33 @@
 
 <p><%= notice %></p>
 
+<%= link_to '終了期限が遅い順にソートする',tasks_path(sort_expired:"true") %>
+
+<%= form_with(scope: :task, url:tasks_path, method: :get, local: true) do |form| %>
+
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+
+  <%= form.label :status %>
+<%= form.select :status, Task.statuses.keys, placeholder: "選択なし" %>
+
+  <%= form.submit '検索する' %>
+<% end %>
+
 <table>
   <tr>
     <th>タスクの名前</th>
     <th>タスクの内容</th>
+    <th>タスクの終了期限</th>
+    <th>タスクのステータス</th>
   </tr>
 
 <% @tasks.each do |task| %>
   <tr class="task_list">
     <td><%= task.name %></td>
     <td><%= task.content %></td>
+    <td><%= task.end_time %></td>
+    <td><%= task.status %></td>
     <td><%= link_to 'タスクの詳細を確認する', task_path(task.id) %></td>
     <td><%= link_to 'タスクを編集する', edit_task_path(task.id) %></td>
   <td><%= link_to 'タスクを削除する', task_path(task.id), method: :delete %></td>

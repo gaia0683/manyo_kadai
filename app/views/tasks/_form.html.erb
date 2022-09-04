@@ -17,6 +17,12 @@
   <%= form.label :content %>
   <%= form.text_field :content %>
 
+  <%= form.label :end_time %>
+  <%= form.date_field :end_time %>
+
+  <%= form.label :status %>
+<%= form.select :status,Task.statuses.keys %>
+
   <%= form.submit '登録する' %>
 <% end %>
 

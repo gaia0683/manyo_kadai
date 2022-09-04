@@ -1,6 +1,6 @@
 require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
-  let!(:task) { FactoryBot.create(:task, name:'task', content:'task', end_time:'2022-09-10') }
+  let!(:task) { FactoryBot.create(:task, name:'task', content:'task', end_time:'2022-09-10',status:'着手中') }
   describe '新規作成機能' do
     before do
       visit tasks_path
@@ -11,11 +11,35 @@ RSpec.describe 'タスク管理機能', type: :system do
         fill_in 'Name', with: 'task'
         fill_in 'Content', with: 'task'
         fill_in 'End time', with: Date.current
+        select '未着手', from: 'Status'
 
         click_on '登録する'
 
         expect(page).to have_content 'task'
         expect(page).to have_content(Date.current)
+      end
+    end
+    context "タイトルであいまい検索をした場合" do
+      it "検索キーワードを含むタスクで絞り込まれる" do
+        visit tasks_path
+        fill_in 'Name', with: 'task'
+        expect(page).to have_content 'task'
+      end
+    end
+    context "ステータス検索をした場合" do
+      it "ステータスに完全一致するタスクが絞り込まれる" do
+        visit tasks_path
+        select '着手中', from: 'Status'
+        expect(page).to have_select('Status', selected: '着手中')
+      end
+    end
+    context "タイトルのあいまい検索とステータス検索をした場合" do
+      it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスクが絞り込まれる" do
+        visit tasks_path
+        fill_in 'Name', with: 'task'
+        select '着手中', from: 'Status'
+        expect(page).to have_content 'task'
+        expect(page).to have_select('Status',selected: '着手中')
       end
     end
   end

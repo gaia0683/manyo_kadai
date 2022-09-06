@@ -2,10 +2,10 @@
 
 <p><%= notice %></p>
 
-<%= link_to '終了期限が遅い順にソートする',tasks_path(sort_expired:"true") %>
+<%= link_to '終了期限が遅い順にソートする',tasks_path(sort_expired:"true"), class: 'btn btn-warning' %>
 
-<%= link_to '優先度の高い順にソートする', tasks_path(sort_rank:"true")  %>
-
+<%= link_to '優先度の高い順にソートする', tasks_path(sort_rank:"true"), class: 'btn btn-danger' %>
+<hr>
 <%= form_with(scope: :task, url:tasks_path, method: :get, local: true) do |form| %>
 
   <%= form.label :name %>
@@ -14,9 +14,9 @@
   <%= form.label :status %>
 <%= form.select :status, Task.statuses.keys, include_blank: '選択してください' %>
 
-  <%= form.submit '検索する' %>
+  <%= form.submit '検索する',class:'btn btn-info' %>
 <% end %>
-
+<hr>
 <table>
   <tr>
     <th>タスクの名前</th>
@@ -33,12 +33,13 @@
     <td><%= task.end_time %></td>
     <td><%= task.status %></td>
     <td><%= task.rank %></td>
-    <td><%= link_to 'タスクの詳細を確認する', task_path(task.id) %></td>
-    <td><%= link_to 'タスクを編集する', edit_task_path(task.id) %></td>
-  <td><%= link_to 'タスクを削除する', task_path(task.id), method: :delete %></td>
+    <td><%= link_to 'タスクの詳細を確認する', task_path(task.id),class: 'btn btn-primary' %></td>
+    <td><%= link_to 'タスクを編集する', edit_task_path(task.id),class:'btn btn-primary' %></td>
+  <td><%= link_to 'タスクを削除する', task_path(task.id), method: :delete,class:'btn btn-primary' %></td>
   </tr>
 <% end %>
 </table>
-
+<hr>
 <%= paginate @tasks %>
-<%= link_to 'タスクの登録', new_task_path %>
+<hr>
+<%= link_to 'タスクの登録', new_task_path,class:'btn btn-dark' %>

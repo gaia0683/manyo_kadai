@@ -22,8 +22,9 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
   describe '一覧表示機能' do
     before do
-      FactoryBot.create(:task, name:'task',content:'task')
-      FactoryBot.create(:task, name: 'task2', content: 'task2')
+      FactoryBot.create(:task, name:'task',content:'task',end_time:'2022-09-10',rank:'高')
+      FactoryBot.create(:task, name: 'task2', content: 'task2',end_time:'2022-09-17',rank:'中')
+      FactoryBot.create(:task, name: 'task3', content: 'task3',end_time:'2022-09-28',rank:'低')
       visit tasks_path
     end
     context '一覧画面に遷移した場合' do
@@ -35,11 +36,21 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクが作成日時の降順に並んでいる場合' do
       it '新しいタスクが一番上に表示される' do
 
-
         task_list = all('.task_list')
 
-        expect(task_list[0]).to have_content 'task2'
-        expect(task_list[1]).to have_content 'task'
+        expect(task_list[0]).to have_content 'task3'
+        expect(task_list[1]).to have_content 'task2'
+      end
+    end
+    context 'タスクが優先度の高い順に並んでいる場合' do
+      it '優先度の高いタスクが一番上に表示される' do
+        click_on '優先度の高い順にソートする'
+
+        sleep 1.0
+        task_list = all('.task_list')
+
+        expect(task_list[0]).to have_content '高'
+        expect(task_list[1]).to have_content '中'
       end
     end
   end

@@ -4,6 +4,8 @@
 
 <%= link_to '終了期限が遅い順にソートする',tasks_path(sort_expired:"true") %>
 
+<%= link_to '優先度の高い順にソートする', tasks_path(sort_rank:"true")  %>
+
 <%= form_with(scope: :task, url:tasks_path, method: :get, local: true) do |form| %>
 
   <%= form.label :name %>
@@ -20,7 +22,8 @@
     <th>タスクの名前</th>
     <th>タスクの内容</th>
     <th>タスクの終了期限</th>
-    <th>タスクのステータス</th>
+    <th>タスクの状況</th>
+    <th>タスクの優先度</th>
   </tr>
 
 <% @tasks.each do |task| %>
@@ -29,6 +32,7 @@
     <td><%= task.content %></td>
     <td><%= task.end_time %></td>
     <td><%= task.status %></td>
+    <td><%= task.rank %></td>
     <td><%= link_to 'タスクの詳細を確認する', task_path(task.id) %></td>
     <td><%= link_to 'タスクを編集する', edit_task_path(task.id) %></td>
   <td><%= link_to 'タスクを削除する', task_path(task.id), method: :delete %></td>
@@ -36,4 +40,5 @@
 <% end %>
 </table>
 
+<%= paginate @tasks %>
 <%= link_to 'タスクの登録', new_task_path %>

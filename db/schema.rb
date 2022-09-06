@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2022_09_06_050357) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "end_time", default: -> { "CURRENT_DATE" }, null: false
-    t.string "status", default: "未着手", null: false
-    t.string "rank", default: "低", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "rank", default: 0, null: false
   end
 
 end

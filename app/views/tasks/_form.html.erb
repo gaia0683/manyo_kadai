@@ -21,7 +21,10 @@
   <%= form.date_field :end_time %>
 
   <%= form.label :status %>
-<%= form.select :status,Task.statuses.keys %>
+  <%= form.select :status,Task.statuses.keys %>
+
+  <%= form.label :rank %>
+  <%= form.select :rank, Task.ranks.keys %>
 
   <%= form.submit '登録する' %>
 <% end %>

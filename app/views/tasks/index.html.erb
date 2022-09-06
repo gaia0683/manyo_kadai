@@ -10,7 +10,7 @@
   <%= form.text_field :name %>
 
   <%= form.label :status %>
-<%= form.select :status, Task.statuses.keys, placeholder: "選択なし" %>
+<%= form.select :status, Task.statuses.keys, include_blank: '選択してください' %>
 
   <%= form.submit '検索する' %>
 <% end %>

@@ -1,6 +1,6 @@
 require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
-  let!(:task) { FactoryBot.create(:task, name:'task', content:'task', end_time:'2022-09-10',status:'着手中') }
+
   describe '新規作成機能' do
     before do
       visit tasks_path
@@ -11,7 +11,7 @@ RSpec.describe 'タスク管理機能', type: :system do
         fill_in 'Name', with: 'task'
         fill_in 'Content', with: 'task'
         fill_in 'End time', with: Date.current
-        select '未着手', from: 'Status'
+        select '着手中', from: 'Status'
 
         click_on '登録する'
 
@@ -19,32 +19,10 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(page).to have_content(Date.current)
       end
     end
-    context "タイトルであいまい検索をした場合" do
-      it "検索キーワードを含むタスクで絞り込まれる" do
-        visit tasks_path
-        fill_in 'Name', with: 'task'
-        expect(page).to have_content 'task'
-      end
-    end
-    context "ステータス検索をした場合" do
-      it "ステータスに完全一致するタスクが絞り込まれる" do
-        visit tasks_path
-        select '着手中', from: 'Status'
-        expect(page).to have_select('Status', selected: '着手中')
-      end
-    end
-    context "タイトルのあいまい検索とステータス検索をした場合" do
-      it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスクが絞り込まれる" do
-        visit tasks_path
-        fill_in 'Name', with: 'task'
-        select '着手中', from: 'Status'
-        expect(page).to have_content 'task'
-        expect(page).to have_select('Status',selected: '着手中')
-      end
-    end
   end
   describe '一覧表示機能' do
     before do
+      FactoryBot.create(:task, name:'task',content:'task')
       FactoryBot.create(:task, name: 'task2', content: 'task2')
       visit tasks_path
     end
@@ -74,6 +52,48 @@ RSpec.describe 'タスク管理機能', type: :system do
         visit task_path(task.id)
 
         expect(page).to have_content 'task'
+      end
+    end
+  end
+  describe '検索機能' do
+    before do
+      FactoryBot.create(:task,name: "task",content:"task",status:"着手中")
+      FactoryBot.create(:task,name:"task2",content:"task2",status:"完了")
+      visit tasks_path
+    end
+    context "タイトルであいまい検索をした場合" do
+      it "検索キーワードを含むタスクで絞り込まれる" do
+        visit tasks_path
+        fill_in 'Name', with: 'task'
+
+        click_on '検索する'
+
+        expect(page).to have_content 'task'
+      end
+    end
+    context "ステータス検索をした場合" do
+      it "ステータスに完全一致するタスクが絞り込まれる" do
+        visit tasks_path
+        task_list = all('.task_list')
+        select '着手中', from: 'task_status'
+
+        click_on '検索する'
+
+        expect(page).to have_selector 'td', text: '着手中'
+      end
+    end
+    context "タイトルのあいまい検索とステータス検索をした場合" do
+      it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスクが絞り込まれる" do
+        visit tasks_path
+
+        task_list = all('.task_list')
+        fill_in 'Name', with: 'task'
+        select '着手中', from: 'task_status'
+
+        click_on '検索する'
+
+        expect(page).to have_content 'task'
+        expect(page).to have_selector 'td', text: '着手中'
       end
     end
   end

@@ -17,7 +17,16 @@
   <%= form.label :content %>
   <%= form.text_field :content %>
 
-  <%= form.submit '登録する' %>
-<% end %>
+  <%= form.label :end_time %>
+  <%= form.date_field :end_time %>
 
-<%= link_to "タスク一覧に戻る", tasks_path %>
+  <%= form.label :status %>
+  <%= form.select :status,Task.statuses.keys %>
+
+  <%= form.label :rank %>
+  <%= form.select :rank, Task.ranks.keys %>
+
+  <%= form.submit '登録する',class: 'btn btn-success' %>
+<% end %>
+<hr>
+<%= link_to "タスク一覧に戻る", tasks_path,class: 'btn btn-info' %>

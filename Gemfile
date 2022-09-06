@@ -43,6 +43,8 @@ group :development, :test do
   gem 'faker'
 
   gem 'launchy'
+
+  gem 'pry-rails'
 end
 
 gem 'rexml'
@@ -68,3 +70,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'kaminari'
+
+gem 'bootstrap', '~>4.4.1'
+
+gem 'jquery-rails'

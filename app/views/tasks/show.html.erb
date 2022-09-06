@@ -2,3 +2,7 @@
 
 <p>タスクの名前: <%= @task.name %></p>
 <p>タスクの内容: <%= @task.content %></p>
+<p>タスクの終了期限: <%= @task.end_time %></p>
+<p>タスクの状況: <%= @task.status %></p>
+<p>タスクの優先度: <%= @task.rank %></p>
+<%= link_to 'タスク一覧に戻る', tasks_path,class:'btn btn-info' %>

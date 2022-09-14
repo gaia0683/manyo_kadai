@@ -22,9 +22,10 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
   describe '一覧表示機能' do
     before do
-      FactoryBot.create(:task, name:'task',content:'task',end_time:'2022-09-10',rank:'高')
-      FactoryBot.create(:task, name: 'task2', content: 'task2',end_time:'2022-09-17',rank:'中')
-      FactoryBot.create(:task, name: 'task3', content: 'task3',end_time:'2022-09-28',rank:'低')
+      FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com',password:'gaia0683',password_confirmation:'gaia0683')
+      FactoryBot.create(:task, name:'task',content:'task',end_time:'2022-09-10',rank:'高',user: user)
+      FactoryBot.create(:task, name: 'task2', content: 'task2',end_time:'2022-09-17',rank:'中',user: user)
+      FactoryBot.create(:task, name: 'task3', content: 'task3',end_time:'2022-09-28',rank:'低',user: user)
       visit tasks_path
     end
     context '一覧画面に遷移した場合' do
@@ -57,8 +58,8 @@ RSpec.describe 'タスク管理機能', type: :system do
   describe '詳細表示機能' do
     context '任意のタスク詳細画面に遷移した場合' do
       it '該当タスクの内容が表示される' do
-
-        task = FactoryBot.create(:task, name: 'task', content: 'task')
+        FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com',password:'gaia0683',password_confirmation:'gaia0683')
+        task = FactoryBot.create(:task, name: 'task', content: 'task',user: user)
 
         visit task_path(task.id)
 

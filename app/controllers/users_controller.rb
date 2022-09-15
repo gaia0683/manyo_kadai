@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
   skip_before_action :login_required, only: [:new, :create]
   def new
-    @user = User.new
+    if current_user.present?
+      redirect_to tasks_path, notice: 'すでにログインしています'
+    else
+      @user = User.new
+    end
   end
 
   def create

@@ -1,0 +1,13 @@
+<h1>ユーザーの詳細</h1>
+
+<p>名前:<%= @user.name %></p>
+<p>メールアドレス:<%= @user.email %></p>
+
+<% @user.tasks.each do |task| %>
+  <p>タスクの名前:<%= task.name %></p>
+  <p>タスクの内容:<%= task.content %></p>
+  <p>タスクの優先順位:<%= task.rank %></p>
+  <p>タスクの状態:<%= task.status %></p>
+<% end %>
+
+<%= link_to 'ユーザー一覧に戻る', admin_users_path %>

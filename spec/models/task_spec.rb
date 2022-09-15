@@ -15,14 +15,16 @@ end
     end
     context 'タスクのタイトルと詳細に内容が記載されている場合' do
       it 'バリデーションが通る' do
-        task = Task.new(name: 'task', content: 'task')
+        user = FactoryBot.create(:user,name:'kimu',email:'kimu@kimu.com')
+        task = FactoryBot.create(:task,name: 'task', content: 'task',user_id: user.id)
         expect(task).to be_valid
       end
     end
   end
   describe '検索機能' do
-    let!(:task){ FactoryBot.create(:task, name:'task',content:'aa',status:'着手中') }
-    let!(:second_task){ FactoryBot.create(:task, name:'sample',content:'bb',status:'完了' ) }
+    let!(:user){ FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com') }
+    let!(:task){ FactoryBot.create(:task, name:'task',content:'aa',status:'着手中',user:user) }
+    let!(:second_task){ FactoryBot.create(:task, name:'sample',content:'bb',status:'完了',user:user) }
     context 'scopeメソッドでタイトルのあいまい検索をした場合' do
       it '検索キーワードを含むタスクが絞り込まれる' do
         expect(Task.search_name('task')).to include(task)

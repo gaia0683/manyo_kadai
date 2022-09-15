@@ -3,10 +3,17 @@ RSpec.describe 'タスク管理機能', type: :system do
 
   describe '新規作成機能' do
     before do
-      visit tasks_path
+      visit new_session_path
     end
     context 'タスクを新規作成した場合' do
       it '作成したタスクが表示される' do
+        FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com',password:'gaia0683',password_confirmation:'gaia0683')
+
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
         visit new_task_path
         fill_in 'Name', with: 'task'
         fill_in 'Content', with: 'task'
@@ -22,19 +29,36 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
   describe '一覧表示機能' do
     before do
-      FactoryBot.create(:task, name:'task',content:'task',end_time:'2022-09-10',rank:'高')
-      FactoryBot.create(:task, name: 'task2', content: 'task2',end_time:'2022-09-17',rank:'中')
-      FactoryBot.create(:task, name: 'task3', content: 'task3',end_time:'2022-09-28',rank:'低')
-      visit tasks_path
+      user = FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com',password:'gaia0683',password_confirmation:'gaia0683')
+      FactoryBot.create(:task, name:'task',content:'task',end_time:'2022-09-10',rank:'高',user_id: user.id)
+      FactoryBot.create(:task, name: 'task2', content: 'task2',end_time:'2022-09-17',rank:'中',user_id: user.id)
+      FactoryBot.create(:task, name: 'task3', content: 'task3',end_time:'2022-09-28',rank:'低',user_id: user.id)
+      visit new_session_path
     end
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
+        visit tasks_path
+
         expect(page).to have_content 'task'
       end
     end
 
     context 'タスクが作成日時の降順に並んでいる場合' do
+      before do
+      visit new_session_path
+      end
       it '新しいタスクが一番上に表示される' do
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
+        visit tasks_path
 
         task_list = all('.task_list')
 
@@ -44,6 +68,13 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context 'タスクが優先度の高い順に並んでいる場合' do
       it '優先度の高いタスクが一番上に表示される' do
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
+        visit tasks_path
+
         click_on '優先度の高い順にソートする'
 
         sleep 1.0
@@ -55,26 +86,43 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
   end
   describe '詳細表示機能' do
+    before do
+      visit new_session_path
+    end
     context '任意のタスク詳細画面に遷移した場合' do
       it '該当タスクの内容が表示される' do
+        user = FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com',password:'gaia0683',password_confirmation:'gaia0683')
 
-        task = FactoryBot.create(:task, name: 'task', content: 'task')
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
+        task = FactoryBot.create(:task, name: 'task', content: 'task',end_time:'2022-09-11',rank:'低',user_id: user.id)
 
         visit task_path(task.id)
 
-        expect(page).to have_content 'task'
+        expect(current_path).to eq task_path(task.id)
       end
     end
   end
   describe '検索機能' do
     before do
-      FactoryBot.create(:task,name: "task",content:"task",status:"着手中")
-      FactoryBot.create(:task,name:"task2",content:"task2",status:"完了")
+      user = FactoryBot.create(:user, name:'kimu',email:'kimu@kimu.com',password:'gaia0683',password_confirmation:'gaia0683')
+      FactoryBot.create(:task,name: "task",content:"task",status:"着手中",user_id:user.id)
+      FactoryBot.create(:task,name:"task2",content:"task2",status:"完了",user_id:user.id)
       visit tasks_path
     end
     context "タイトルであいまい検索をした場合" do
       it "検索キーワードを含むタスクで絞り込まれる" do
+
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
         visit tasks_path
+
         fill_in 'Name', with: 'task'
 
         click_on '検索する'
@@ -84,7 +132,13 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context "ステータス検索をした場合" do
       it "ステータスに完全一致するタスクが絞り込まれる" do
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
         visit tasks_path
+
         task_list = all('.task_list')
         select '着手中', from: 'task_status'
 
@@ -95,9 +149,15 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context "タイトルのあいまい検索とステータス検索をした場合" do
       it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスクが絞り込まれる" do
+        fill_in 'session_email', with: 'kimu@kimu.com'
+        fill_in 'session_password', with: 'gaia0683'
+
+        click_button 'ログイン'
+
         visit tasks_path
 
         task_list = all('.task_list')
+
         fill_in 'Name', with: 'task'
         select '着手中', from: 'task_status'
 

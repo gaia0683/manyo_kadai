@@ -20,4 +20,5 @@ class Task < ApplicationRecord
     中:1,
     低:0
   }
+  belongs_to :user
 end

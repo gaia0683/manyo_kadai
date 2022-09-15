@@ -24,6 +24,7 @@
     <th>タスクの終了期限</th>
     <th>タスクの状況</th>
     <th>タスクの優先度</th>
+    <th>タスクの作成者</th>
   </tr>
 
 <% @tasks.each do |task| %>
@@ -33,6 +34,7 @@
     <td><%= task.end_time %></td>
     <td><%= task.status %></td>
     <td><%= task.rank %></td>
+    <td><%= task.user.name %></td>
     <td><%= link_to 'タスクの詳細を確認する', task_path(task.id),class: 'btn btn-primary' %></td>
     <td><%= link_to 'タスクを編集する', edit_task_path(task.id),class:'btn btn-primary' %></td>
   <td><%= link_to 'タスクを削除する', task_path(task.id), method: :delete,class:'btn btn-primary' %></td>

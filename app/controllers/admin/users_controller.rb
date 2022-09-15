@@ -2,7 +2,7 @@ class Admin::UsersController < ApplicationController
   before_action :set_user, only: [ :show, :edit, :update, :destroy]
   def index
     if current_user.admin_user == true
-      @users = User.select(:name,:email,:password_digest,:id)
+      @users = User.select(:name,:email,:password_digest,:id,:admin_user)
     else current_user.admin_user == false
       redirect_to tasks_path, notice: '管理者以外はアクセスできません'
     end

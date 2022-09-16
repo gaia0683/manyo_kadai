@@ -15,6 +15,8 @@ class TasksController < ApplicationController
         @tasks = current_user.tasks.search_name(task_params[:name])
       elsif task_params[:status].present?
         @tasks = current_user.tasks.search_status(task_params[:status])
+      #elsif task_params[:label].present?
+        #@tasks =
       end
     end
     @tasks = @tasks.page(params[:page]).per(10)
@@ -27,7 +29,7 @@ class TasksController < ApplicationController
 
   def create
     @task = current_user.tasks.build(task_params)
-    if @task.save
+    if @task.save!
       redirect_to task_path(@task.id), notice: "タスクを登録しました！"
     else
       render :new
@@ -62,6 +64,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :content,:end_time,:status,:rank)
+    params.require(:task).permit(:name, :content,:end_time,:status,:rank,:label_ids)
   end
 end

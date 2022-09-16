@@ -12,8 +12,10 @@
   <%= form.text_field :name %>
 
   <%= form.label :status %>
-<%= form.select :status, Task.statuses.keys, include_blank: '選択してください' %>
+  <%= form.select :status, Task.statuses.keys, include_blank: '選択してください' %>
 
+  <%= form.label :label %>
+  <%= form.select :label_id, Label.all.collect { |p| [ p.name, p.id ] }, include_blank: '選択してください' %>
   <%= form.submit '検索する',class:'btn btn-info' %>
 <% end %>
 <hr>
@@ -25,6 +27,7 @@
     <th>タスクの状況</th>
     <th>タスクの優先度</th>
     <th>タスクの作成者</th>
+    <th>タスクのラベル</th>
   </tr>
 
 <% @tasks.each do |task| %>
@@ -35,6 +38,11 @@
     <td><%= task.status %></td>
     <td><%= task.rank %></td>
     <td><%= task.user.name %></td>
+    <td>
+      <% task.labels.each do |label| %>
+        <%= label.name %>
+      <% end %>
+    </td>
     <td><%= link_to 'タスクの詳細を確認する', task_path(task.id),class: 'btn btn-primary' %></td>
     <td><%= link_to 'タスクを編集する', edit_task_path(task.id),class:'btn btn-primary' %></td>
   <td><%= link_to 'タスクを削除する', task_path(task.id), method: :delete,class:'btn btn-primary' %></td>

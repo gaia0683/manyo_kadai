@@ -10,6 +10,9 @@ class Task < ApplicationRecord
   scope :search_status, ->(status) do
     where(status: status)
   end
+  scope :search_label, ->(label_id) do
+    where(id: task_id)
+  end
   enum status:{
     未着手:0,
     着手中:1,
@@ -21,4 +24,6 @@ class Task < ApplicationRecord
     低:0
   }
   belongs_to :user
+  has_many :labellings, dependent: :destroy
+  has_many :labels, through: :labellings, source: :label
 end

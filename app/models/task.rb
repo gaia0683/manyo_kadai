@@ -10,9 +10,6 @@ class Task < ApplicationRecord
   scope :search_status, ->(status) do
     where(status: status)
   end
-  scope :search_label, ->(label_id) do
-    where(id: task_id)
-  end
   enum status:{
     未着手:0,
     着手中:1,
